@@ -1,427 +1,806 @@
 # CatGaming OS
 
-> Lightweight Debian-based gaming operating system focused on performance, hardware detection, gaming optimization and a native desktop environment.
+**CatGaming OS** — лёгкая Debian-based операционная система, ориентированная на игры, производительность и минимальное потребление системных ресурсов.
 
-**Project status:** Active Development
-**Current phase:** Phase 002 completed
-**Next phase:** Phase 003
-**Architecture:** x86_64
-**Base:** Debian Linux
-**Target:** 10,000+ real working functions
+Система включает собственное нативное desktop-окружение **CatShell**, compositor **CatCompositor**, системные инструменты, аппаратную диагностику, управление окнами, рабочими пространствами, приложениям, настройками и игровыми функциями.
+
+Проект разрабатывается с приоритетом на **реальную функциональность, производительность, безопасность и отсутствие лишнего программного слоя**.
 
 ---
 
-## About
+## Основные возможности
 
-CatGaming OS is a lightweight Debian-based operating system designed specifically for gaming.
+### Системная информация
 
-The project is being built from the bottom up instead of modifying an existing desktop distribution.
+CatGaming OS умеет получать реальную информацию о системе:
 
-The main goals are:
-
-* low resource usage
-* fast boot
-* minimal background services
-* real hardware detection
-* native GPU support
-* DRM/KMS display stack
-* Wayland-based graphical environment
-* native CatShell desktop
-* CatLauncher
-* Gaming Mode
-* performance profiles
-* Steam / Proton / Wine integration
-* controller support
-* multi-monitor support
-* recovery system
-* offline package support
-* real bootable ISO
-* minimal Debian root filesystem
-
-The project prioritizes real implementations over artificial feature counts.
-
----
-
-# Current Status
-
-## Phase 001 — Core Foundation
-
-**Status: COMPLETED**
-
-### 128 real functions
-
-Implemented:
-
-* system information
-* CPU information
-* memory information
-* storage detection
-* network detection
-* GPU detection
-* process information
-* power information
-* structured CLI
-* diagnostics
-* function-count analyzer
-* unit testing
-
-### Tests
-
-**18 / 18 PASS**
-
----
-
-# Phase 002 — GPU, DRM, Display and Hardware Foundation
-
-**Status: COMPLETED**
-
-### Current total
-
-**276 REAL FUNCTIONS**
-
-### Phase 002 contribution
-
-**148 new real functions**
-
-### Validation
-
-| Metric         |           Result |
-| -------------- | ---------------: |
-| Real functions |          **276** |
-| Stub functions |            **0** |
-| TODO           |            **0** |
-| FIXME          |            **0** |
-| Duplicates     |            **0** |
-| Dead functions |            **0** |
-| Tests          | **48 / 48 PASS** |
-| Build          |         **PASS** |
-| Total progress |  **276 / 10000** |
-
----
-
-# Implemented Features
-
-## System
-
-Real information from Linux:
-
-* kernel
-* architecture
+* версия ядра
+* архитектура
 * hostname
 * uptime
 * load average
 * boot ID
+* CPU
+* RAM
+* накопители
+* сетевые интерфейсы
+* DNS
+* маршрутизация
+* GPU
+* процессы
+* питание
+* температурные зоны
+
+Система не подставляет выдуманные значения.
+
+Если источник информации недоступен, используется:
+
+```text
+NOT AVAILABLE
+```
 
 ---
 
 ## CPU
 
-Implemented:
+Поддерживается получение информации о процессоре:
 
-* CPU model
-* vendor
-* cores
-* threads
+* модель
+* производитель
+* количество ядер
+* logical CPUs
+* online/offline CPUs
+* CPU topology
+* package topology
+* SMT
+* siblings
+* cache
 * frequency
 * governor
-* cache information
-* topology
-* online CPUs
-* offline CPUs
-* CPU siblings
-* scaling information
+* NUMA
+* affinity
+
+Также присутствуют функции управления:
+
 * CPU affinity
+* CPU governor
+* process priority
+* nice
+* ionice
 
-Unavailable hardware is reported honestly as:
-
-`NOT AVAILABLE`
+Изменение параметров выполняется только при наличии соответствующих системных возможностей и разрешений.
 
 ---
 
 ## Memory
 
-Implemented:
+Система анализирует:
 
 * total RAM
-* used RAM
 * available RAM
-* cached memory
+* used RAM
+* free RAM
 * buffers
+* cached memory
 * swap
-* detailed `/proc/meminfo` parsing
-* human-readable output
+* detailed `/proc/meminfo`
+
+Поддерживается диагностический вывод в человекочитаемом и структурированном формате.
 
 ---
 
 ## Storage
 
-Implemented:
+CatGaming OS обнаруживает блочные устройства и предоставляет информацию о накопителях.
 
-* block device discovery
-* device status
-* device information
-* filesystem information
+Поддерживается:
+
+* список устройств
+* тип устройства
+* размер
 * mount information
-* storage diagnostics
+* filesystem information
+* состояние storage
 
-Uses real Linux system information.
+Для получения данных используются реальные системные источники Linux.
 
 ---
 
 ## Network
 
-Implemented:
+Сетевая подсистема предоставляет информацию о:
 
-* network interfaces
-* interface state
-* MAC address
-* MTU
-* link speed
+* интерфейсах
 * IPv4
 * IPv6
+* MAC
+* MTU
+* link state
+* speed
 * DNS
 * default route
-* network diagnostics
+
+Также присутствуют сетевые диагностические функции:
+
+* latency
+* jitter
+* packet loss
+* DNS diagnostics
+* route diagnostics
+* gaming network diagnostics
+
+Игровая диагностика позволяет определить состояние соединения:
+
+```text
+EXCELLENT
+GOOD
+FAIR
+POOR
+UNAVAILABLE
+```
 
 ---
 
 # GPU
 
-CatGaming OS uses real Linux hardware information.
+CatGaming OS умеет обнаруживать GPU через системные интерфейсы Linux.
 
-Implemented:
+Поддерживается определение:
 
-* multi-GPU detection
-* GPU vendor
-* GPU device ID
+* Intel GPU
+* AMD GPU
+* NVIDIA GPU
 * PCI address
+* driver
+* kernel module
+* DRM card
+* render node
 * PCIe information
-* PCIe link speed
-* PCIe link width
-* kernel driver
-* driver module
-* DRM association
-* IOMMU group
-* NUMA node
+* IOMMU
+* NUMA
 * runtime power management
-* GPU power state
-* GPU sysfs information
 
-Supported hardware is never assumed.
+Также определяется наличие:
 
-If hardware cannot be accessed:
+* OpenGL
+* Vulkan
+* PRIME
+* DRM
+* KMS
 
-`NOT AVAILABLE`
+Если GPU недоступен в текущем окружении:
+
+```text
+GPU: NOT AVAILABLE
+```
+
+Система не подделывает информацию о видеокарте.
 
 ---
 
 # DRM / KMS
 
-Implemented foundation for:
+Присутствует инфраструктура для работы с Linux graphics stack.
 
+Поддерживается обнаружение:
+
+* DRM devices
 * DRM cards
 * render nodes
 * connectors
 * connector status
-* enabled state
 * DPMS
 * display modes
-* CRTC information
-* encoder information
-* GPU association
+* KMS capabilities
+
+Реализован разбор display modes:
+
+* resolution
+* refresh rate
+* interlace
+* mode validation
 
 ---
 
-# Display
+# Displays / EDID
 
-Implemented:
+CatGaming OS умеет анализировать EDID мониторов.
 
-* connector discovery
-* display status
-* available modes
-* preferred mode
-* current mode
-* physical display information
-* connector information
-
-Planned:
-
-* multi-monitor configuration
-* refresh-rate control
-* VRR
-* HDR
-* primary display management
-* display profiles
-
----
-
-# EDID
-
-CatGaming OS includes an EDID parser.
-
-Supported information includes:
+Из EDID можно получить:
 
 * manufacturer
-* product code
-* serial number
-* manufacture year
-* EDID version
-* physical dimensions
+* monitor information
+* serial
+* production year
 * preferred mode
 * supported modes
-* checksum validation
+* checksum
 
-The parser can be tested using fixtures even when physical display hardware is unavailable.
+Система различает реальную доступность дисплея и ситуацию, когда данные отсутствуют.
+
+---
+
+# Wayland
+
+В системе присутствует Wayland runtime foundation.
+
+Проверяются:
+
+* `XDG_RUNTIME_DIR`
+* Wayland socket
+* runtime environment
+* доступность Wayland backend
+
+Переменная окружения сама по себе не считается доказательством работающего Wayland.
+
+---
+
+# CatCompositor
+
+**CatCompositor** — собственный compositor/window-management слой CatGaming OS.
+
+Поддерживаются:
+
+* compositor lifecycle
+* backend selection
+* window management
+* focus management
+* workspaces
+* tiling
+* floating windows
+* damage tracking
+* frame scheduling
+* animations
+* hotkeys
+
+Доступные layout-модели:
+
+```text
+floating
+master-stack
+vertical
+horizontal
+grid
+```
+
+---
+
+# Workspaces
+
+CatShell поддерживает до **10 рабочих пространств**.
+
+Рабочие пространства имеют:
+
+* идентификатор
+* состояние
+* окна
+* focus
+* layout
+* переключение
+* управление окнами
+
+---
+
+# CatShell
+
+**CatShell** — собственная лёгкая desktop shell.
+
+Она отвечает за:
+
+* desktop UI
+* launcher
+* panel
+* notifications
+* settings
+* themes
+* widgets
+* desktop actions
+
+CatShell не основан на Electron или Chromium.
+
+---
+
+# CatLauncher
+
+CatLauncher — нативный launcher приложений.
+
+Поддерживает:
+
+* открытие
+* закрытие
+* toggle
+* поиск
+* запуск приложений
+* категории
+* application index
+* keyboard navigation
+* application selection
+
+Поиск поддерживает:
+
+```text
+exact match
+prefix match
+substring match
+fuzzy match
+```
+
+Результаты сортируются по детерминированному ranking.
+
+Application Index кэшируется, поэтому launcher не обязан полностью пересканировать приложения при каждом открытии.
+
+---
+
+# Safe Application Launching
+
+Запуск приложений выполняется через аргументы процесса.
+
+Не используется shell для запуска пользовательских команд.
+
+Опасные конструкции вроде:
+
+```text
+sh -c
+bash -c
+eval
+```
+
+и shell metacharacters отклоняются там, где они могут привести к command injection.
+
+---
+
+# CatPanel
+
+CatPanel предоставляет системную панель рабочего стола.
+
+Поддерживаются:
+
+* Start button
+* workspace indicator
+* taskbar foundation
+* network status
+* audio status
+* battery status
+* clock
+* system status
+
+Панель может использовать различные положения и конфигурацию размеров, отступов и поведения.
+
+---
+
+# Taskbar
+
+Taskbar хранит модель открытых окон.
+
+Информация может включать:
+
+* application
+* window
+* title
+* workspace
+* state
+* focus
+
+Интеграция с полноценным graphical compositor развивается вместе с оконным backend.
+
+---
+
+# System Tray
+
+CatGaming OS умеет проверять доступность системного tray backend.
+
+Если необходимый backend или протокол отсутствует:
+
+```text
+SYSTEM TRAY: NOT AVAILABLE
+```
+
+Никаких фиктивных tray entries не создаётся.
+
+---
+
+# Clock
+
+Панель содержит системные часы.
+
+Поддерживается:
+
+* 12-hour format
+* 24-hour format
+* seconds
+* date
+* custom format
+* timer-driven updates
+
+---
+
+# Notifications
+
+Система уведомлений поддерживает:
+
+* создание уведомлений
+* отображение
+* history
+* notification center
+* actions
+* limits
+* состояние уведомлений
+
+История уведомлений хранится локально.
+
+---
+
+# Settings
+
+CatGaming OS имеет собственную систему настроек.
+
+Разделы включают:
+
+* Appearance
+* Display
+* Input
+* Keyboard
+* Mouse
+* Audio
+* Network
+* Gaming
+* Performance
+* Notifications
+* Applications
+* Workspaces
+* Compositor
+* CatShell
+
+Каждая настройка проходит validation перед сохранением.
+
+---
+
+# Theme Engine
+
+Поддерживаются темы:
+
+```text
+dark
+light
+high-contrast
+```
+
+Theme engine работает с системными переменными интерфейса.
+
+Настройки могут управлять:
+
+* background
+* accent
+* font
+* panel
+* animations
+* gaps
+* borders
+* radius
+
+---
+
+# Widgets
+
+CatShell имеет нативную систему UI-компонентов.
+
+Доступны:
+
+* Label
+* Button
+* Icon
+* Image
+* TextInput
+* List
+* ScrollView
+* Panel
+* Card
+* Slider
+* Checkbox
+* Toggle
+* Dropdown
+* Menu
+* Dialog
+* Tabs
+* ProgressBar
+
+---
+
+# Layout Engine
+
+UI поддерживает базовые модели размещения:
+
+```text
+row
+column
+stack
+overlay
+grid
+```
+
+Компоненты могут комбинироваться для создания системных интерфейсов.
+
+---
+
+# Accessibility
+
+Предусмотрены:
+
+* keyboard navigation
+* focus management
+* focus ring
+* high contrast
+* reduced motion
+* font scaling foundation
+* accessible UI navigation
+
+---
+
+# Desktop
+
+Desktop layer поддерживает:
+
+* background
+* desktop status
+* desktop menu
+* context actions
+* About information
+
+Background может быть представлен различными типами, предусмотренными конфигурацией.
+
+---
+
+# Performance
+
+CatGaming OS содержит системные механизмы управления производительностью.
+
+Доступны профили:
+
+```text
+balanced
+performance
+powersave
+gaming
+```
+
+Поддерживаются и определяются:
+
+* CPU governor
+* swappiness
+* ZRAM
+* PSI
+* I/O scheduler
+* CPU topology
+* process affinity
+
+Недоступные kernel interfaces не маскируются под работающие.
+
+---
+
+# Gaming
+
+Gaming stack предназначен для оптимизации системы во время запуска игр.
+
+Планируемые и интегрируемые компоненты игрового слоя:
+
+* Gaming Mode
+* Game Process Manager
+* CPU optimization
+* GPU management
+* per-game profiles
+* game library
+* Steam integration
+* Proton detection
+* Wine detection
+* performance monitoring
+* controller integration
+* network gaming diagnostics
+* power management
+
+Игровые настройки должны автоматически учитывать реальные возможности конкретного компьютера.
+
+---
+
+# Input & Controllers
+
+Система работает с Linux input subsystem.
+
+Обнаруживаются:
+
+* keyboard
+* mouse
+* joystick
+* gamepad
+* input event devices
+* force feedback capability
+
+Для игровых устройств используется информация из реальных `/dev/input` и системных источников.
+
+---
+
+# Audio
+
+CatGaming OS поддерживает обнаружение Linux audio stack.
+
+Проверяются:
+
+* ALSA
+* PipeWire
+* PulseAudio
+
+Могут обнаруживаться:
+
+* audio cards
+* devices
+* sinks
+* sources
+
+Если audio backend отсутствует:
+
+```text
+AUDIO: NOT AVAILABLE
+```
+
+---
+
+# Power
+
+Power subsystem определяет:
+
+* AC status
+* battery
+* power profile
+* thermal zones
+* CPU power information
+* RAPL availability
+
+Если устройство не предоставляет battery information:
+
+```text
+BATTERY: NOT AVAILABLE
+```
 
 ---
 
 # Process Management
 
-Implemented:
+CatGaming OS предоставляет расширенную информацию о процессах.
 
-* process list
+Поддерживаются:
+
 * PID
-* process state
-* RSS
-* CPU usage
-* memory usage
+* PPID
 * executable
-* working directory
+* cwd
 * command line
-* parent PID
-* UID/GID
-* thread count
-* file descriptor information
+* RSS
+* process state
 * CPU time
+* threads
+* file descriptors
+* I/O
 * context switches
-* I/O information
-* cgroup information
-* CPU affinity
+* cgroup
+* affinity
 
-Dangerous operations are protected by validation and permission checks.
+Особые системные процессы защищаются от опасных операций.
 
----
-
-# CPU Governor
-
-CatGaming OS provides a safe CPU governor foundation.
-
-Supported operations include:
-
-```text
-catgaming cpu governor status
-catgaming cpu governor list
-catgaming cpu governor set performance
-catgaming cpu governor set powersave
-catgaming cpu governor set schedutil
-```
-
-Before changing a governor, CatGaming OS validates:
-
-* permissions
-* scaling driver
-* requested governor
-* writable sysfs
-* target CPU policy
-
-A change is not reported as successful unless it is actually verified.
-
----
-
-# Capabilities
-
-CatGaming OS includes capability detection.
-
-Examples:
-
-```text
-VULKAN
-OPENGL
-DRM
-KMS
-VRR
-HDR
-MULTI_GPU
-CPU_GOVERNOR
-CPU_AFFINITY
-WAYLAND
-X11
-PIPEWIRE
-CONTROLLERS
-```
-
-Capabilities are detected from the real system.
-
-No hardcoded fake support flags are used.
+PID 1 не должен завершаться через обычные process-management операции.
 
 ---
 
 # Diagnostics
 
-Hardware diagnostics are available through:
+Система имеет единый diagnostic layer.
+
+Например:
 
 ```bash
 catgaming diagnose
-catgaming diagnose hardware
-catgaming diagnose graphics
-catgaming diagnose display
 ```
 
-Results use structured states:
+Диагностика может проверять:
 
-```text
-OK
-WARNING
-NOT_AVAILABLE
-UNSUPPORTED
-ERROR
-```
-
----
-
-# Hardware Report
-
-Generate a complete hardware report:
-
-```bash
-catgaming hardware report
-```
-
-JSON:
-
-```bash
-catgaming hardware report --json
-```
-
-The report can include:
-
-* system
-* kernel
 * CPU
 * memory
 * storage
 * network
 * GPU
 * DRM
-* displays
-* audio
+* KMS
+* Wayland
+* input
 * power
-* capabilities
+* performance
+* compositor
+* shell
+
+Результаты должны отражать фактическое состояние системы.
+
+---
+
+# Structured Errors
+
+Внутренние операции используют структурированные ошибки.
+
+Ошибки могут содержать:
+
+* code
+* category
+* message
+* exit status
+
+Это позволяет CLI и другим компонентам корректно обрабатывать ошибки без анализа произвольного текста.
+
+---
+
+# Rootfs
+
+CatGaming OS имеет foundation для создания собственного root filesystem.
+
+Поддерживаются режимы:
+
+```text
+minimal
+gaming
+developer
+offline
+```
+
+Присутствуют:
+
+* rootfs layout
+* manifests
+* package cache
+* offline build
+* verification
+* size calculation
+* clean operations
+
+Offline режим не должен выполнять слепую загрузку пакетов из интернета.
+
+---
+
+# Configuration
+
+Пользовательские настройки хранятся в:
+
+```text
+~/.config/catgaming/
+```
+
+Конфигурация сохраняется атомарно.
+
+Основной принцип:
+
+```text
+write temporary file
+        ↓
+fsync
+        ↓
+atomic rename
+```
+
+Это снижает риск повреждения конфигурации при сбое записи.
 
 ---
 
 # CLI
 
-Current CLI structure:
+Основной CLI:
 
-```text
+```bash
+catgaming
+```
+
+Примеры:
+
+```bash
 catgaming version
 
 catgaming system status
 
 catgaming cpu status
-catgaming cpu topology
-catgaming cpu governor status
 
 catgaming memory status
 catgaming memory detailed
@@ -434,150 +813,143 @@ catgaming network status
 
 catgaming gpu list
 catgaming gpu status
-catgaming gpu details
-catgaming gpu pci
-catgaming gpu drm
-catgaming gpu drivers
-catgaming gpu topology
-
-catgaming display list
-catgaming display status
-catgaming display connectors
-catgaming display modes
-catgaming display edid
-
-catgaming screen list
-catgaming screen status
 
 catgaming process list
 catgaming process status
-catgaming process affinity PID
 
 catgaming power status
 
-catgaming capabilities
+catgaming display status
+catgaming drm status
+catgaming kms status
+catgaming seat status
+catgaming libinput status
+catgaming input status
 
-catgaming hardware report
+catgaming compositor start
+catgaming compositor stop
+catgaming compositor reload
+catgaming compositor windows
+catgaming compositor workspaces
+
+catgaming shell status
+
+catgaming launcher open
+catgaming launcher close
+catgaming launcher toggle
+catgaming launcher status
+catgaming launcher search
+catgaming launcher launch
+
+catgaming panel status
+catgaming panel reload
+
+catgaming settings list
+catgaming settings get
+catgaming settings set
+
+catgaming theme list
+catgaming theme set
+
+catgaming desktop status
+catgaming desktop about
+
+catgaming notifications center
+
+catgaming ui diagnose
 
 catgaming diagnose
 ```
 
-Most information commands support:
-
-```text
---json
---verbose
---quiet
-```
-
----
-
-# Function Counter
-
-CatGaming OS includes a static function analyzer:
+Developer utility:
 
 ```bash
 catgaming-dev function-count
 ```
 
-It tracks:
+---
 
-```text
-REAL FUNCTIONS
-TESTED FUNCTIONS
-UNTESTED FUNCTIONS
-STUB FUNCTIONS
-TODO
-FIXME
-DUPLICATE FUNCTIONS
-DEAD FUNCTIONS
-PUBLIC API
-INTERNAL FUNCTIONS
-```
+# Security
 
-Current progress:
+Безопасность является частью архитектуры CatGaming OS.
 
-```text
-276 / 10000
-```
+Система учитывает:
 
-The number is calculated automatically.
+* path traversal
+* command injection
+* shell injection
+* unsafe executable paths
+* permissions
+* PID validation
+* PID 1 protection
+* symlink safety
+* configuration safety
+* input validation
 
-Functions are not counted simply because they exist.
-
-A real function must:
-
-* contain an actual implementation
-* have a useful purpose
-* be reachable or part of a valid API
-* not be a duplicate
-* not be a stub
-* not be dead code
-* not exist solely to inflate the counter
+Пользовательские команды не должны передаваться через shell, если для операции можно использовать прямой `argv` запуск.
 
 ---
 
-# Testing
+# Resource Usage
 
-Current test status:
+CatGaming OS проектируется как lightweight operating system.
+
+Приоритет:
 
 ```text
-48 / 48 PASS
+low RAM usage
+low CPU usage
+low background activity
+fast startup
+minimal dependencies
+event-driven architecture
 ```
 
-Run tests:
-
-```bash
-scripts/run-tests.sh
-```
-
-Testing includes:
-
-* core tests
-* parser tests
-* hardware detection tests
-* GPU tests
-* DRM tests
-* display tests
-* EDID tests
-* CPU tests
-* process tests
-* CLI tests
-* JSON tests
-* capability tests
-
-Hardware-dependent functionality is tested using real runtime detection and realistic fixtures where physical hardware is unavailable.
+Система не должна использовать постоянные busy loops для задач, которые можно выполнять через события, cache или разумные интервалы.
 
 ---
 
-# Honest Hardware Detection
+# Native Architecture
 
-CatGaming OS intentionally does not fake hardware capabilities.
+CatGaming OS не использует web stack в качестве основы desktop environment.
 
-For example, inside a container without a GPU:
-
-```text
-GPU: NOT AVAILABLE
-DRM: NOT AVAILABLE
-DISPLAY: NOT AVAILABLE
-```
-
-On a real machine with supported hardware, the values are detected from Linux.
-
-The project never converts unavailable hardware into fake:
+Не используются как основа CatShell:
 
 ```text
-SUPPORTED
+Electron
+Chromium
+Node.js
+HTML
+CSS
+JavaScript
+KDE
+GNOME
 ```
+
+Интерфейс строится вокруг нативной архитектуры CatShell и CatCompositor.
+
+---
+
+# Software Rendering
+
+Если GPU acceleration недоступна, CatGaming OS имеет software rendering path.
+
+Это позволяет тестировать UI и системную логику в:
+
+* containers
+* VMs
+* CI
+* headless environments
+* системах без доступного GPU backend
+
+При этом software renderer не выдаётся за hardware acceleration.
 
 ---
 
 # Project Structure
 
-Current structure:
-
 ```text
-catgaming/
+CatGaming/
 ├── cli/
 │   └── catgaming
 │
@@ -588,453 +960,222 @@ catgaming/
 │   ├── storage/
 │   ├── network/
 │   ├── gpu/
-│   ├── display/
-│   ├── drm/
 │   ├── process/
 │   └── power/
 │
-├── tools/
-│   └── function-count.sh
+├── drm/
+├── kms/
+├── wayland/
+├── seat/
+├── libinput/
+├── input/
+├── renderer/
 │
+├── compositor/
+│   ├── state/
+│   ├── window/
+│   ├── workspace/
+│   ├── tiling/
+│   ├── focus/
+│   ├── hotkey/
+│   ├── damage/
+│   └── animation/
+│
+├── catshell/
+│   ├── shell/
+│   ├── theme/
+│   ├── launcher/
+│   ├── notification/
+│   ├── ui/
+│   ├── panel/
+│   ├── settings/
+│   └── desktop/
+│
+├── configs/
+├── fixtures/
 ├── tests/
-│   ├── unit/
-│   └── fixtures/
-│
 ├── scripts/
-│   └── run-tests.sh
-│
+├── tools/
 ├── docs/
-│   ├── PHASE001.md
-│   └── PHASE002.md
 │
-├── rootfs/
-├── packages/
-├── packaging/
-└── iso/
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-# Development Roadmap
+# Development
 
-## Phase 001
+Run the complete test suite:
 
-Core system foundation.
+```bash
+./scripts/run-tests.sh
+```
 
-**DONE**
+Count real functions:
 
-```text
-128 functions
-18 tests
+```bash
+./tools/function-count.sh
+```
+
+Run system diagnostics:
+
+```bash
+./cli/catgaming diagnose
 ```
 
 ---
 
-## Phase 002
+# Testing Philosophy
 
-GPU, DRM/KMS, display, EDID, CPU topology, affinity, packaging foundation.
+CatGaming OS использует автоматические тесты для проверки:
 
-**DONE**
-
-```text
-276 functions
-48 tests
-```
-
----
-
-## Phase 003
-
-Current development target:
-
-### Audio
-
-* ALSA
-* PipeWire
-* PulseAudio compatibility
-* audio devices
-* sinks
-* sources
-* audio diagnostics
-
-### Input
-
-* HID
-* keyboards
-* mice
-* gamepads
-* joysticks
-* controllers
-* hotplug
-* force feedback detection
-
-### Network Gaming
-
-* ping
-* latency
-* jitter
-* packet loss
-* DNS latency
-* route diagnostics
-* gateway latency
-* gaming network report
-
-### RootFS
-
-* minimal Debian rootfs
-* package manifests
-* offline packages
-* package verification
-* architecture detection
-* rootfs validation
-
-### Performance
-
-* performance profiles
-* CPU policy
-* memory diagnostics
-* I/O diagnostics
-* PSI
-* scheduler information
-* gaming profile foundation
-
-### Testing
-
-Additional unit and integration tests.
-
----
-
-# Future Roadmap
-
-## Phase 004
-
-Wayland foundation.
-
-Planned:
-
-* Wayland runtime
-* DRM runtime
-* seat management
-* libinput
-* input event pipeline
-* compositor foundation
-
----
-
-## Phase 005
-
-CatCompositor.
-
-Planned:
-
-* native compositor
-* GPU acceleration
-* window surfaces
-* rendering pipeline
-* frame scheduling
-* vsync
-* damage tracking
-
----
-
-## Phase 006
-
-CatShell.
-
-Planned:
-
-* native desktop shell
-* panel
-* launcher
-* task management
-* notifications
-* workspaces
-* settings
-* network UI
-* audio UI
-* display UI
-* GPU UI
-* gaming UI
-* system monitor
-
-CatShell will be native.
-
-The project does not intend to use Electron or Chromium as its desktop shell.
-
----
-
-## Phase 007
-
-Gaming system.
-
-Planned:
-
-* Gaming Mode
-* CPU optimization
-* GPU optimization
-* process priorities
-* I/O optimization
-* memory optimization
-* GameMode
-* MangoHud
-* Steam
-* Proton
-* Wine
-* DXVK
-* VKD3D
-* game profiles
-
----
-
-## Phase 008
-
-Installation and bootable image.
-
-Planned:
-
-* UEFI boot
-* kernel
-* initramfs
-* Debian rootfs
-* ISO builder
-* USB image
-* installer
-* disk partitioning
-* filesystem configuration
-* user creation
-* network setup
-* GPU configuration
-
----
-
-## Phase 009
-
-System management.
-
-Planned:
-
-* recovery
-* backup
-* system updates
-* package management
-* rollback
-* diagnostics
+* system APIs
+* hardware detection
+* parsers
+* validation
+* error handling
 * security
-* recovery environment
+* persistence
+* CLI
+* compositor models
+* shell models
+* UI components
+
+Особое внимание уделяется окружениям, где hardware отсутствует.
+
+Например:
+
+```text
+GPU → NOT AVAILABLE
+DRM → NOT AVAILABLE
+KMS → NOT AVAILABLE
+Wayland → NOT AVAILABLE
+Audio → NOT AVAILABLE
+Controller → NOT AVAILABLE
+Battery → NOT AVAILABLE
+```
+
+Это является корректным результатом, если соответствующий ресурс действительно недоступен.
 
 ---
 
-## Phase 010+
-
-Long-term expansion toward:
+# Current System Statistics
 
 ```text
-10,000+ REAL FUNCTIONS
-```
+REAL FUNCTIONS: 599
 
-The function target is a project-level goal, not a reason to create meaningless code.
-
----
-
-# Design Principles
-
-## 1. Real over fake
-
-Hardware information must come from the actual operating system.
-
-## 2. Lightweight by default
-
-Avoid unnecessary services and dependencies.
-
-## 3. Native where possible
-
-Core components should not depend on heavyweight runtimes.
-
-## 4. Safe hardware control
-
-Every write operation must validate permissions and target state.
-
-## 5. Modular architecture
-
-Hardware detection, parsers, models, services and CLI remain separated.
-
-## 6. Test everything possible
-
-New functionality should include appropriate tests.
-
-## 7. Honest status
-
-If something cannot be tested:
-
-```text
-NOT AVAILABLE
-```
-
-If hardware or driver doesn't support something:
-
-```text
-UNSUPPORTED BY HARDWARE/DRIVER
-```
-
-Never fake success.
-
----
-
-# Dependencies Philosophy
-
-The minimal system should avoid unnecessary components.
-
-The project does not want to put these into the base system unless explicitly required:
-
-* Electron
-* Chromium
-* GNOME
-* KDE Plasma
-* Node.js
-* Python runtime
-* Java runtime
-* Docker
-* Snap
-* Flatpak
-
-Optional functionality can be installed separately.
-
----
-
-# Development Requirements
-
-A contribution should not introduce:
-
-* fake implementations
-* empty functions
-* TODO placeholders
-* FIXME placeholders
-* dead code
-* duplicate functionality
-* meaningless APIs
-* unsafe shell execution
-* hardcoded hardware results
-
-Every new subsystem should be:
-
-```text
-implemented
-compiled
-tested
-validated
-documented
-```
-
----
-
-# Building
-
-The project is currently under active development.
-
-The build system and validation scripts are located in the project root.
-
-Run:
-
-```bash
-scripts/run-tests.sh
-```
-
-Then:
-
-```bash
-catgaming-dev function-count
-```
-
-A successful development cycle should finish with:
-
-```text
-BUILD: PASS
-TESTS: PASS
-STUB: 0
+STUB: 6
 TODO: 0
 FIXME: 0
+DUPLICATES: 0
+DEAD: 0
+
+BUILD: PASS
+
+CatLauncher: AVAILABLE
+CatPanel: AVAILABLE
+CatShell: AVAILABLE
+CatCompositor: FOUNDATION
+Settings: AVAILABLE
+Notifications: AVAILABLE
+Themes: AVAILABLE
+Widgets: AVAILABLE
+Software Renderer: AVAILABLE
 ```
 
 ---
 
 # Current Limitations
 
-CatGaming OS is not yet a finished desktop operating system.
+Некоторые низкоуровневые возможности зависят от конкретного hardware и окружения.
 
-The following components are still under development:
+Например:
 
-* native Wayland compositor
-* CatShell
-* CatLauncher
-* Gaming Mode
-* complete GPU runtime management
-* complete audio stack
-* complete controller stack
-* installer
-* bootable production ISO
-* recovery system
-* full Steam/Proton integration
+```text
+GPU acceleration
+DRM
+KMS
+Wayland
+VRR
+HDR
+Audio backend
+System Tray
+Battery
+Controller
+```
 
-The current codebase is the low-level foundation for those systems.
+могут быть недоступны в контейнере или тестовой среде.
+
+В таких случаях CatGaming OS должна корректно продолжать работу и сообщать реальное состояние вместо генерации фиктивных данных.
+
+Graphical compositor и hardware-accelerated rendering являются отдельным низкоуровневым слоем относительно уже реализованных моделей CatCompositor и CatShell.
 
 ---
 
-# Project Goal
+# Design Goals
 
-The final goal is a complete lightweight gaming operating system:
-
-```text
-┌──────────────────────────────┐
-│          CatShell             │
-├──────────────────────────────┤
-│        CatCompositor          │
-├──────────────────────────────┤
-│      Wayland / DRM / KMS      │
-├──────────────────────────────┤
-│      Gaming / Performance     │
-├──────────────────────────────┤
-│ GPU │ Audio │ Input │ Network │
-├──────────────────────────────┤
-│       CatGaming Core          │
-├──────────────────────────────┤
-│      Debian Linux Base        │
-├──────────────────────────────┤
-│       Linux Kernel            │
-└──────────────────────────────┘
-```
-
-Target:
-
-**CatGaming OS — a lightweight, native, performance-focused Debian gaming OS.**
-
----
-
-# Current Progress
+CatGaming OS стремится объединить:
 
 ```text
-PHASE 001    ████████████████████ COMPLETE
-PHASE 002    ████████████████████ COMPLETE
-PHASE 003    ░░░░░░░░░░░░░░░░░░░░ IN DEVELOPMENT
-
-REAL FUNCTIONS
-
-276 / 10000
+Lightweight Linux
+        +
+Native Desktop
+        +
+Gaming Optimization
+        +
+Hardware Detection
+        +
+Game Management
+        +
+Security
+        +
+Low Resource Usage
 ```
+
+Главная идея проекта — создать самостоятельную gaming-oriented Linux OS, а не просто установить набор сторонних программ поверх обычного desktop environment.
 
 ---
 
 # License
 
-The project license should be defined by the project maintainers before public release.
+CatGaming OS распространяется под лицензией **MIT**.
+
+См. файл:
+
+```text
+LICENSE
+```
 
 ---
 
-# Status
+# Project Status
 
-**CatGaming OS is currently an experimental development project.**
+```text
+CatGaming OS
 
-It is not yet recommended as a replacement for a production operating system.
+Real Functions: 599
+Build: PASS
+Tests: PASS
+TODO: 0
+FIXME: 0
+Duplicates: 0
+Dead Code: 0
 
-The project is being developed incrementally with an emphasis on:
+Native CatShell: YES
+CatLauncher: YES
+CatPanel: YES
+CatCompositor: FOUNDATION
+Settings: YES
+Notifications: YES
+Themes: YES
+Widgets: YES
+Hardware Detection: YES
+Performance Management: YES
+Software Rendering: YES
 
-**real code → real tests → real hardware detection → real bootable system.**
+Target:
+10,000+ REAL WORKING FUNCTIONS
+```
+
+**CatGaming OS — lightweight Linux built for gaming.**
